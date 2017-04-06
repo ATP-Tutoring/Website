@@ -4,13 +4,13 @@ $dbhost = 'REDACTED';
 $dbuser = 'REDACTED';
 $dbpass = 'REDACTED';
 
-function dbConnect($db='') {
+function dbConnect() {
     global $dbhost, $dbuser, $dbpass;
     
-    $dbcnx = @mysql_connect($dbhost, $dbuser, $dbpass)
-        or die('The site database appears to be down.');
+    
+    $dbcnx = mysqli_connect( $dbhost, $dbuser, $dbpass, 'tamu'); 
 
-    if ($db!='' and !@mysql_select_db($db))
+    if (!$dbcnx)
         die('The site database is unavailable.');
     
     return $dbcnx;
