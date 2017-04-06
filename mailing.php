@@ -66,7 +66,7 @@ if (!isset($_POST['submitok'])):
         <div class="col s12 m12">
           <div class="card blue">
             <div class="card-content white-text">
-              <span class="card-title">Register Keith</span>
+              <span class="card-title">Register</span>
       			  <div class="row">
     <form class="col s12" method="post" action="<?=$_SERVER['PHP_SELF']?>">
       <div class="row">
@@ -87,7 +87,7 @@ if (!isset($_POST['submitok'])):
       </div>
        <button class="btn waves-effect waves-light" type="submit" name="action" style="background-color:#3c3c3c;">Register
        <i class="material-icons right">done</i>
-    </button>
+      </button>
       
     </form>
   </div>
