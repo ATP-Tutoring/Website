@@ -1,9 +1,14 @@
 <?php // mailing.php
 
-include("common.php");
-include("db.php");
+ini_set('display_errors', 1);
 
-if (!isset($_POST['submitok'])):
+include("atp-common.php");
+include("atp-db.php");
+
+
+
+if (!isset($_POST['action'])):
+    echo "yup - " + time();
     // Display the user signup form
     ?>
 
@@ -13,8 +18,6 @@ if (!isset($_POST['submitok'])):
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
   <title>ATP West Windsor-Plainsboro</title>
-
-  <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -68,20 +71,20 @@ if (!isset($_POST['submitok'])):
             <div class="card-content white-text">
               <span class="card-title">Register</span>
       			  <div class="row">
-    <form class="col s12" method="post" action="<?=$_SERVER['PHP_SELF']?>">
+    <form class="col s12" method="post" action="">
       <div class="row">
         <div class="input-field col s6">
-          <input id="first_name" type="text" class="validate">
+          <input id="first_name" name="first_name" type="text" class="validate">
           <label for="first_name">First Name</label>
         </div>
         <div class="input-field col s6">
-          <input id="last_name" type="text" class="validate">
+          <input id="last_name" name="last_name" type="text" class="validate">
           <label for="last_name">Last Name</label>
         </div>
       </div>
            <div class="row">
         <div class="input-field col s12">
-          <input id="email" type="email" class="validate">
+          <input id="email" name="email" type="email" class="validate">
           <label for="email">Email</label>
         </div>
       </div>
@@ -167,38 +170,45 @@ else:
     }
 
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    $fn = $_POST['first_name'];
+    $ln = $_POST['last_name'];
+
     if (empty($email)) {
       error('The email address you entered is not valid. It must be in the xyx@xyz.xyz format.');
     }
     
     // Check for existing user with the new id
 
-    $stmt = $link->prepare("SELECT * FROM accounts WHERE email = ?");
+    $stmt = $link->prepare("SELECT COUNT(1) FROM accounts WHERE email = ?");
     $stmt->bind_param("s", $email); 
     $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    
+     if ($count > 0) { 
+           error('Your email address is already registered on our mailing list.');
+    }
 
+    $stmt->close();
+
+   
     
 
-    if (!$result) { 
-        error('A database error occurred in processing your '.
-              'submission.\\nIf this error persists, please '.
-              'contact info@atpwwp.com.');
-    }
-    if (mysqli_num_rows($result) > 0) {
-        error('Your email address is already registered on our mailing list.');
-    }
-    
+    if($insertstmt = $link->prepare("INSERT INTO accounts (firstname, lastname, email) VALUES (?, ?, ?)"))
+    {
+      $insertstmt->bind_param("sss", $fn, $ln, $email);
+      
 
-    $insertstmt = $link->prepare("INSERT INTO accounts (firstname, lastname, email) VALUES (?, ?, ?)");
-    $insertstmt->bind_param("sss", $_POST[first_name], $_POST[last_name], $email);
-    $insertstmt->execute();
-    $insertresult = $insertstmt->get_result();
-
-    if (!$insertresult)
+      if (!$insertstmt->execute())
         error('A database error occurred in processing your '.
               'submission.\\nIf this error persists, please '.
               'contact info@atpwwp.com.\\n');
+    }
+    else
+    {
+      $error = $link->errno . ' ' . $link->error;
+      echo $error; 
+    }
               
          
     ?>
