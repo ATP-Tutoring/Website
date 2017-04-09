@@ -2552,7 +2552,7 @@ ul:not(.browser-default) li {
 }
 
 a {
-  color: #039be5;
+  color: #eeeeee;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -2900,6 +2900,9 @@ table.bordered > tbody > tr {
 
 table.striped > tbody > tr:nth-child(odd) {
   background-color: #72b3e8;
+}
+table.striped > tbody > tr:nth-child(even) {
+  background-color: #2196f3;
 }
 
 table.striped > tbody > tr > td {

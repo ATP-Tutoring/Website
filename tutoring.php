@@ -1,3 +1,12 @@
+<?php // tutoring.php
+
+ini_set('display_errors', 1);
+
+include("atp-common.php");
+include("atp-db.php");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,8 +27,8 @@
 		<li><a href="./index.html">Home</a></li>
         <li><a href="./aboutus.html">About Us</a></li>
 		<li><a href="./teachingpolicy.html">Teaching Policy</a></li>
-		<li class="active"><a href="#">Contact</a></li>
-    <li><a href="./tutoring.php">Manage Tutoring</a></li>
+		<li><a href="./contact.html">Contact</a></li>
+    <li class="active"><a href="#">Manage Tutoring</a></li>
 		<li><a href="./mailing.php">Register for Mailing List</a></li>
       </ul>
 
@@ -27,8 +36,8 @@
         <li><a href="./index.html">Home</a></li>
         <li><a href="./aboutus.html">About Us</a></li>
     <li><a href="./teachingpolicy.html">Teaching Policy</a></li>
-    <li class="active"><a href="#">Contact</a></li>
-    <li><a href="./tutoring.php">Manage Tutoring</a></li>
+    <li><a href="./contact.html">Contact</a></li>
+    <li class="active"><a href="#">Manage Tutoring</a></li>
     <li><a href="./mailing.php">Register for Mailing List</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -40,9 +49,12 @@
       <div class="container">
         <br><br>
 		
-        <h1 class="header center blue-text">Contact</h1>
+        <h1 class="header center blue-text">Manage Tutoring</h1>
         <div class="row center">
-          <h5 class="header col s12 light blue-text">If you wish to inquire about our service or are looking to volunteer as a tutor, please contact us, preferably by email.</h5>
+          <h5 class="header col s12 light blue-text">See available courses/tutors, and register for tutoring.</h5>
+              <h5 class="header col s12 light blue-text">Email a tutor in order to register with them, ask for clarification about their subject, or ask for availability.</h5>
+              <br>
+              <h6 class="header col s12 light blue-text">We strongly advise you to register for the <a href="./mailing.php" style="color:#cccccc">mailing list</a> if you are signing up for tutoring.</h6> 
         </div>
         <br><br>
 
@@ -58,33 +70,70 @@
 	  
 	 <div class="row">
         <div class="col s12 m12">
-          <div class="card blue">
+          <!-- <div class="card blue">
             <div class="card-content white-text">
-              <span class="card-title">Email</span>
-			  <p>
-				Our whole team: <a href="mailto:info@atpwwp.com" style="color:#ffee58">info@atpwwp.com</a>
-			  </p>
-              <p>
-				Director: <a href="mailto:akshat@atpwwp.com" style="color:#ffee58">akshat@atpwwp.com</a>
-			  </p>
-			  
-			  </div>
-          </div>
-        </div>
-      </div>
-            
-		<div class="row">
-        <div class="col s12 m12">
-          <div class="card blue">
-            <div class="card-content white-text">
-              <span class="card-title">Phone</span>
-              <p>
-				Director: <a href="tel:6099066090" style="color:#ffee58">609-906-6090</a>
-			  </p>
+              <span class="card-title">Courses</span>
+              <div class="row"> -->
+          		    <table class="striped responsive-table" id="courseTable">
+                  <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Tutor</th>
+                        <th>Location of Tutoring</th>
+                        <th>Tutor Email</th>
+                        <th>Availability/Comments</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <?php
+                        $link = dbConnect();
+
+                        if($stmt = $link->prepare("SELECT subject, name, location, email, comments FROM tutors ORDER BY subject"))
+                        {
+                          
+                          
+
+                          if (!$stmt->execute())
+                            error('A database error occurred in retrieving the tutor list.'.
+                                  '\\nIf this error persists, please '.
+                                  'contact info@atpwwp.com.\\n');
+
+                          $stmt->bind_result($subject, $name, $location, $email, $comments);
+
+                          while($stmt->fetch())
+                          {
+                            echo "<tr>   <td style='color:#ffffff'>" . $subject  . "</td>" .
+                                        "<td>" . $name     . "</td>" .
+                                        "<td>" . $location . "</td>" .
+                                        "<td><a href=\"mailto:" . $email ."\">" . $email . "</a></td>" .
+                                        "<td>" . $comments . "</td></tr>";
+                          }
+                        }
+                        else
+                        {
+                          $error = $link->errno . ' ' . $link->error;
+                          echo $error; 
+                        }
+
+
+                    ?>
+
+
+                    
+                  </tbody>
+                </table>
             </div>
-          </div>
-        </div>
+			  
+			  
+         <!-- </div> -->
+        
       </div>
+	  
+	  
+	  
+		
 	  
 	  
 

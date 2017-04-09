@@ -30,12 +30,17 @@ if (!isset($_POST['action'])):
         <li><a href="./aboutus.html">About Us</a></li>
 		<li><a href="./teachingpolicy.html">Teaching Policy</a></li>
 		<li><a href="./contact.html">Contact</a></li>
-    <li><a href="./tutoring.html">Manage Tutoring</a></li>
+    <li><a href="./tutoring.php">Manage Tutoring</a></li>
 		<li class="active"><a href="#">Register for Mailing List</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Navbar Link</a></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./aboutus.html">About Us</a></li>
+    <li><a href="./teachingpolicy.html">Teaching Policy</a></li>
+    <li><a href="./contact.html">Contact</a></li>
+    <li><a href="./tutoring.php">Manage Tutoring</a></li>
+    <li class="active"><a href="#">Register for Mailing List</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
