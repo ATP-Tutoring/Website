@@ -8,8 +8,7 @@ include("atp-db.php");
 
 
 if (!isset($_POST['action'])):
-    echo "yup - " + time();
-    // Display the user signup form
+  
     ?>
 
 <!DOCTYPE html>
